@@ -9,6 +9,7 @@ void mostrarClientes(eCliente arrayCliente[], int tamCliente, ePedido arrayPedid
 
 	printf("ID         CLIENTE                           CUIT                      DIRECCION              LOCALIDAD         PEDIDOS PENDIENTES\n");
 	for(i = 0 ;i < tamCliente; i++){
+		if(arrayCliente[i].isEmpty==0){
 			for(j = 0;j < tamPedido;j++)
 			{
 				if(arrayCliente[i].idEmpresa == arrayPedido[j].idEmpresa && arrayPedido[j].isEmpty==0 && arrayPedido[j].estado==0)
@@ -22,14 +23,14 @@ void mostrarClientes(eCliente arrayCliente[], int tamCliente, ePedido arrayPedid
 														   arrayCliente[i].empresa,
 														   arrayCliente[i].cuit,
 														   arrayCliente[i].direccion,
-														   arrayCliente[i].localidad,
+														   arrayCliente[i].localidad.localidad,
 														   contPendientes);
 
 			contPendientes = 0;
 
 		}
 
-
+	}
 }
 
 
@@ -130,7 +131,7 @@ void pedidosPorLocalidad(eCliente arrayCliente[], int tamCliente, ePedido arrayP
 		for(i=0;i<tamCliente;i++){
 
 
-			if(stricmp(localidadIngresada, arrayCliente[i].localidad)==0){
+			if(stricmp(localidadIngresada, arrayCliente[i].localidad.localidad)==0){
 
 				for(j=0;j<tamPedido;j++){
 

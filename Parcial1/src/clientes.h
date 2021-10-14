@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "utn.h"
+#include "localidad.h"
 #define TEXT_SIZE 40
 
 
@@ -16,7 +17,8 @@ typedef struct{
 	char empresa[TEXT_SIZE];
 	char cuit[TEXT_SIZE];
 	char direccion[TEXT_SIZE];
-	char localidad[TEXT_SIZE];
+//	char localidad[TEXT_SIZE];
+	eLocalidad localidad;
 	int isEmpty;
 }eCliente;
 

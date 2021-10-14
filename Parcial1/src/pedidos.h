@@ -1,5 +1,5 @@
 #include "clientes.h"
-
+#include "localidad.h"
 #ifndef PEDIDOS_H_
 #define PEDIDOS_H_
 

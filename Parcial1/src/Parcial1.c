@@ -19,8 +19,8 @@ int main(void) {
 	eCliente_inicializarArray(cliente, MAXCLIENTES);
 	ePedido_inicializarArray(pedido, MAXPEDIDOS);
 
-/* HARDCODEO PARA PRUEBAS
-    eCliente cliente[MAXCLIENTES] = {{1,"Residuos Avellaneda",205,"Mitre 4200","SARANDI",0},
+// HARDCODEO PARA PRUEBAS
+ /*   eCliente cliente[MAXCLIENTES] = {{1,"Residuos Avellaneda",205,"Mitre 4200","SARANDI",0},
                                          {2,"Residuos Barracas",205,"Alvarado 2500","CABA ",0},
                                          {3,"Residuos Berazategui",205,"Calle 14 540","Berazategui",0},
 										 {4,"Residuos Quilmes",205,"Lavalle 200","Quilmes",0}
@@ -32,8 +32,8 @@ int main(void) {
                                      {4,2,3000,200,300,2500,1,0},  //caba
                                      {5,1,2000,500,750,100,1,0}    //berazategui
     								};
-*/
 
+*/
 
 	do{
 

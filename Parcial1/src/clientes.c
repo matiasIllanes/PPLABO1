@@ -1,7 +1,5 @@
 
-static int idIncremental=0; //VER EN EL CLASSROOM GENERAL LO EXPLICAN CON FUNCIONES ESTATICAS.
-// NO LA PUEDO LLAMAR DESDE OTRO LUGAR QUE NO SEA DESDE DONDE ESTA DEFINIDA-
-
+static int idIncremental=0;
 
 
 
@@ -9,7 +7,7 @@ static int idIncremental=0; //VER EN EL CLASSROOM GENERAL LO EXPLICAN CON FUNCIO
 
 void eCliente_alta(eCliente array[], int tam){
 	int index;
-
+	eLocalidad localidad;
 	index = eCliente_buscarLibre(array, tam);
 
 	if(index>=0){
@@ -18,7 +16,8 @@ void eCliente_alta(eCliente array[], int tam){
 		getString(array[index].empresa, "Ingrese nombre de la empresa: ", TEXT_SIZE);
 		getString(array[index].cuit, "Ingrese Numero de CUIT: ", TEXT_SIZE);
 		getString(array[index].direccion, "Ingrese dirección de la empresa: ", TEXT_SIZE);
-		getString(array[index].localidad, "Ingrese localidad de la empresa: ", TEXT_SIZE);
+
+		getString(array[index].localidad.localidad, "Ingrese localidad de la empresa: ", TEXT_SIZE);
 
 		array[index].isEmpty=0;
 
@@ -66,6 +65,7 @@ int eCliente_obtenerId(){
 void eCliente_modificarCliente(eCliente array[], int tam){
 	int idMod;
 	int index;
+	eLocalidad localidad;
 
 	idMod=getInt("Ingrese Numero de cliente a modificar: ");
 	index = eCliente_buscarId(array, tam, idMod);
@@ -81,7 +81,7 @@ void eCliente_modificarCliente(eCliente array[], int tam){
 
 
 	getString(array[index].direccion, "MODIFICACION: Ingrese dirección de la empresa: ", TEXT_SIZE);
-	getString(array[index].localidad, "MODIFICACION: Ingrese localidad de la empresa: ", TEXT_SIZE);
+	getString(array[index].localidad.localidad, "MODIFICACION: Ingrese localidad de la empresa: ", TEXT_SIZE);
 
 
 }
@@ -112,7 +112,7 @@ int eCliente_mostrarLista(eCliente array[], int tam){
 
 		for(i=0;i<tam;i++){
 			if(array[i].isEmpty==0){
-				printf("%-8d %-15s %-30s %-30s\n", array[i].idEmpresa, array[i].empresa, array[i].direccion, array[i].localidad );
+				printf("%-8d %-15s %-30s %-30s\n", array[i].idEmpresa, array[i].empresa, array[i].direccion, array[i].localidad.localidad );
 				retorno=1;
 			}
 		}
