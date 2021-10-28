@@ -3,11 +3,15 @@
 #include "clientes.h"
 #include "pedidos.h"
 #include "informes.h"
+#include "localidad.h"
 
-#define MAXCLIENTES 4
-#define MAXPEDIDOS 5
 
-int main(void) {
+
+#define MAXCLIENTES 100
+#define MAXPEDIDOS 1000
+#define MAXLOCALIDADES 4
+
+int main(void){
 	setbuf(stdout, NULL);
 
 	int option;
@@ -19,21 +23,14 @@ int main(void) {
 	eCliente_inicializarArray(cliente, MAXCLIENTES);
 	ePedido_inicializarArray(pedido, MAXPEDIDOS);
 
-// HARDCODEO PARA PRUEBAS
- /*   eCliente cliente[MAXCLIENTES] = {{1,"Residuos Avellaneda",205,"Mitre 4200","SARANDI",0},
-                                         {2,"Residuos Barracas",205,"Alvarado 2500","CABA ",0},
-                                         {3,"Residuos Berazategui",205,"Calle 14 540","Berazategui",0},
-										 {4,"Residuos Quilmes",205,"Lavalle 200","Quilmes",0}
-                                        };
 
-    ePedido pedido[MAXPEDIDOS] =    {{1,1,2000,600,600,500,1,0},  //sarandi
-                                     {2,2,1000,400,400,0,1,0},   //caba
-                                     {3,3,500,0,0,0,0,0},      //berazategui
-                                     {4,2,3000,200,300,2500,1,0},  //caba
-                                     {5,1,2000,500,750,100,1,0}    //berazategui
-    								};
+	eLocalidad localidades[MAXLOCALIDADES] = {{1, "Gerli", 0},
+    										  {2, "Sarandi", 0},
+    										  {3, "Villa Dominico", 0},
+    										  {4, "Wilde", 0}
+    										 };
 
-*/
+
 
 	do{
 
@@ -48,18 +45,21 @@ int main(void) {
 				"8- Imprimir pedidos procesado\n"
 				"9- Ingresar localidad y cantidad de pedidos pendientes\n"
 				"10- Cantidad de de kilos de polipropileno reclicado promedio por cliente\n"
-				"11- Salir\n");
+				"11- PARTE 2 - Cliente con mas Pedidos Pendientes\n"
+				"12- PARTE 2 - Cliente con mas Pedidos Completados\n"
+				"13- PARTE 2 - Cliente con mas pedidos\n"
+				"14- Salir\n");
 		printf("Ingrese una opcion: ");
 		scanf("%d", &option);
 
 		switch(option){
 		case 1:
-			eCliente_alta(cliente, MAXCLIENTES);
+			eCliente_alta(cliente, MAXCLIENTES, localidades, MAXLOCALIDADES);
 			system("pause");
 			break;
 
 		case 2:
-			eCliente_modificarCliente(cliente, MAXCLIENTES);
+			eCliente_modificarCliente(cliente, MAXCLIENTES, localidades, MAXLOCALIDADES);
 			system("pause");
 			break;
 
@@ -82,7 +82,11 @@ int main(void) {
 			system("pause");
 			break;
 		case 6:
-			mostrarClientes(cliente, MAXCLIENTES, pedido, MAXPEDIDOS);
+
+			if(mostrarClientes(cliente, MAXCLIENTES, pedido, MAXPEDIDOS, localidades, MAXLOCALIDADES)==0){
+				printf("NO HAY CLIENTES INGRESADOS.\n");
+			}
+
 			system("pause");
 			break;
 		case 7:
@@ -100,17 +104,33 @@ int main(void) {
 			break;
 
 		case 9:
-			pedidosPorLocalidad(cliente, MAXCLIENTES, pedido, MAXPEDIDOS);
+			pedidosPorLocalidad(cliente, MAXCLIENTES, pedido, MAXPEDIDOS, localidades, MAXLOCALIDADES);
 			system("pause");
 			break;
 
 		case 10:
 			ppPromedio(cliente, MAXCLIENTES, pedido, MAXPEDIDOS);
+			system("pause");
 			break;
 		case 11:
+			clienteMasPendientes(cliente, MAXCLIENTES, pedido, MAXPEDIDOS);
+			system("pause");
+			break;
+
+		case 12:
+			clienteMasProcesados(cliente, MAXCLIENTES, pedido, MAXPEDIDOS);
+			system("pause");
+			break;
+
+		case 13:
+			clienteMasPedidos(cliente, MAXCLIENTES, pedido, MAXPEDIDOS);
+			system("pause");
+			break;
+		default:
+			printf("Ingrese una opcion valida\n");
 			break;
 		}
-	}while(option!=11);
+	}while(option!=14);
 
 	return 0;
 }

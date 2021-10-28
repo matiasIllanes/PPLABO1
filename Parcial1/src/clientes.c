@@ -5,9 +5,8 @@ static int idIncremental=0;
 
 #include "clientes.h"
 
-void eCliente_alta(eCliente array[], int tam){
+void eCliente_alta(eCliente array[], int tam, eLocalidad arrayLocalidad[], int tamLocalidad){
 	int index;
-	eLocalidad localidad;
 	index = eCliente_buscarLibre(array, tam);
 
 	if(index>=0){
@@ -16,8 +15,9 @@ void eCliente_alta(eCliente array[], int tam){
 		getString(array[index].empresa, "Ingrese nombre de la empresa: ", TEXT_SIZE);
 		getString(array[index].cuit, "Ingrese Numero de CUIT: ", TEXT_SIZE);
 		getString(array[index].direccion, "Ingrese dirección de la empresa: ", TEXT_SIZE);
+		eLocalidad_listarLocalidades(arrayLocalidad, tamLocalidad);
+		array[index].idLocalidad = getInt("Ingrese ID de la localidad: ");
 
-		getString(array[index].localidad.localidad, "Ingrese localidad de la empresa: ", TEXT_SIZE);
 
 		array[index].isEmpty=0;
 
@@ -62,10 +62,9 @@ int eCliente_obtenerId(){
 
 
 
-void eCliente_modificarCliente(eCliente array[], int tam){
+void eCliente_modificarCliente(eCliente array[], int tam, eLocalidad arrayLocalidad[], int tamLocalidad){
 	int idMod;
 	int index;
-	eLocalidad localidad;
 
 	idMod=getInt("Ingrese Numero de cliente a modificar: ");
 	index = eCliente_buscarId(array, tam, idMod);
@@ -77,12 +76,9 @@ void eCliente_modificarCliente(eCliente array[], int tam){
 	}
 
 
-	index = eCliente_buscarId(array, tam, idMod);
-
-
 	getString(array[index].direccion, "MODIFICACION: Ingrese dirección de la empresa: ", TEXT_SIZE);
-	getString(array[index].localidad.localidad, "MODIFICACION: Ingrese localidad de la empresa: ", TEXT_SIZE);
-
+	eLocalidad_listarLocalidades(arrayLocalidad, tamLocalidad);
+	array[index].idLocalidad = getInt("Ingrese ID de la localidad: ");
 
 }
 
@@ -108,11 +104,11 @@ int eCliente_mostrarLista(eCliente array[], int tam){
 	int retorno=0;
 
 
-		printf("ID        EMPRESA             DIRECCION                LOCALIDAD\n");
+		printf("ID        EMPRESA\n");
 
 		for(i=0;i<tam;i++){
 			if(array[i].isEmpty==0){
-				printf("%-8d %-15s %-30s %-30s\n", array[i].idEmpresa, array[i].empresa, array[i].direccion, array[i].localidad.localidad );
+				printf("%-8d %-15s\n", array[i].idEmpresa, array[i].empresa);
 				retorno=1;
 			}
 		}

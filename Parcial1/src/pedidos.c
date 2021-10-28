@@ -150,18 +150,6 @@ int ePedido_buscarPendiente(ePedido array[], int tam, int index){
 	return retorno;
 }
 
-int ePedido_contarPendiente(ePedido arrayPedido[], int tamPedido, int index){
-	int i;
-	int contadorPendientes=0;
-
-	for(i=0;i<tamPedido;i++){
-		if(arrayPedido[i].estado==0){
-			contadorPendientes++;
-		}
-	}
-	return contadorPendientes;
-}
-
 
 int ePedido_buscarCompletado(ePedido array[], int tam, int index){
 	int retorno;

@@ -44,3 +44,5 @@ char pedirCaracter(char mensaje[]){
     scanf("%c", &caracterIngresado);
     return caracterIngresado;
 }
+
+

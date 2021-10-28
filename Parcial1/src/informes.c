@@ -1,13 +1,16 @@
 #include "informes.h"
 #include <string.h>
 
-void mostrarClientes(eCliente arrayCliente[], int tamCliente, ePedido arrayPedido[], int tamPedido)
+int mostrarClientes(eCliente arrayCliente[], int tamCliente, ePedido arrayPedido[], int tamPedido, eLocalidad arrayLocalidad[], int tamLocalidad)
 {
 	int i;
 	int j;
+	int k;
+	int flag=0;
 	int contPendientes = 0;
+	char auxLocalidad[40];
 
-	printf("ID         CLIENTE                           CUIT                      DIRECCION              LOCALIDAD         PEDIDOS PENDIENTES\n");
+	printf("ID         CLIENTE                                 CUIT                DIRECCION            LOCALIDAD         PEDIDOS PENDIENTES\n");
 	for(i = 0 ;i < tamCliente; i++){
 		if(arrayCliente[i].isEmpty==0){
 			for(j = 0;j < tamPedido;j++)
@@ -17,45 +20,30 @@ void mostrarClientes(eCliente arrayCliente[], int tamCliente, ePedido arrayPedid
 					contPendientes++;
 				}
 			}
-			arrayPedido[i].idEmpresa = arrayCliente[i].idEmpresa;
+
+
+			for(k=0; k<tamLocalidad; k++){
+				if(arrayCliente[i].idLocalidad == arrayLocalidad[k].idLocalidad){
+					strcpy(auxLocalidad, arrayLocalidad[k].localidad);
+				}
+			}
+
 
 			printf("%-8d %-40s %-20s %-20s %-20s %-20d\n", arrayCliente[i].idEmpresa,
 														   arrayCliente[i].empresa,
 														   arrayCliente[i].cuit,
 														   arrayCliente[i].direccion,
-														   arrayCliente[i].localidad.localidad,
+														   auxLocalidad,
 														   contPendientes);
 
 			contPendientes = 0;
+			flag=1;
 
 		}
 
 	}
+return flag;
 }
-
-
-void mostrarTodo(eCliente arrayCliente[], int tamCliente, ePedido arrayPedido[], int tamPedido){
-	int i;
-	int j;
-
-	for(i=0; i<tamPedido;i++){
-		for(j=0; j<tamCliente; j++){
-			if(arrayCliente[j].idEmpresa == arrayPedido[i].idEmpresa){
-				printf("%-6d %-15s %-15s      pedido nro:%d    estado:%d    tot:%.1f    hdpe:%.1f  ldpe:%.1f   pp:%.1f\n", arrayCliente[j].idEmpresa,
-						   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	   	  arrayCliente[j].empresa,
-																															  arrayCliente[j].cuit,
-																															  arrayPedido[i].idPedido,
-																															  arrayPedido[i].estado,
-																															  arrayPedido[i].plasticoTotal,
-																															  arrayPedido[i].hdpe,
-																															  arrayPedido[i].ldpe,
-																															  arrayPedido[i].pp);
-				break;
-			}
-		}
-	}
-}
-
 
 
 
@@ -119,31 +107,30 @@ int mostrarPedidosCompletados(eCliente arrayCliente[], int tamCliente, ePedido a
 
 
 
-void pedidosPorLocalidad(eCliente arrayCliente[], int tamCliente, ePedido arrayPedido[], int tamPedido){
+void pedidosPorLocalidad(eCliente arrayCliente[], int tamCliente, ePedido arrayPedido[], int tamPedido, eLocalidad arrayLocalidad[], int tamLocalidad){
 	int i;
 	int j;
 	int contPendientes=0;
-	char localidadIngresada[TEXT_SIZE];
+	int auxId;
+
+	eLocalidad_listarLocalidades(arrayLocalidad, tamLocalidad);
+	auxId = getInt("Ingrese ID de la localidad: ");
 
 
-
-		getString(localidadIngresada, "Ingrese una localidad: ", TEXT_SIZE);
 		for(i=0;i<tamCliente;i++){
 
 
-			if(stricmp(localidadIngresada, arrayCliente[i].localidad.localidad)==0){
+			if(auxId == arrayCliente[i].idLocalidad){
 
 				for(j=0;j<tamPedido;j++){
-
 					if(arrayCliente[i].idEmpresa == arrayPedido[j].idEmpresa && arrayPedido[j].estado==0){
 						contPendientes++;
-
 					}
 				}
-
 			}
-		printf("La localidad %s tiene %d pedidos pendientes.\n", localidadIngresada, contPendientes);
+
 		}
+	printf("La localidad con ID %d tiene %d pedidos pendientes.\n", auxId, contPendientes);
 }
 
 
@@ -167,6 +154,84 @@ void ppPromedio(eCliente arrayCliente[], int tamCliente, ePedido arrayPedido[], 
 	}
 	promedio = acumpp/contClientes;
 	printf("El promedio de PP por cliente es: %.2f\n", promedio);
+}
+
+void clienteMasPendientes(eCliente arrayCliente[], int tamCliente, ePedido arrayPedido[], int tamPedido){
+	int i;
+	int j;
+	int acumPendiente=0;
+	int mayor=0;
+	int flag=0;
+	int indexCliente;
+
+
+	for(i=0;i<tamCliente;i++){
+		//if(arrayCliente[i].isEmpty == 0){}															//if arrayCliente.isEmpty=1 =>
+		for(j=0;j<tamPedido;j++){
+			if(arrayPedido[j].idEmpresa == arrayCliente[i].idEmpresa && arrayPedido[j].estado==0){
+				acumPendiente++;
+			}
+			if(acumPendiente>mayor || flag==0){
+				flag=1;
+				mayor=acumPendiente;
+				indexCliente=i;
+			}
+		}
+		acumPendiente=0;
+	}
+	printf("\nEl cliente con mas pedidos pendientes es:  %s con  %d pedidos\n", arrayCliente[indexCliente].empresa, mayor);
+}
+
+void clienteMasProcesados(eCliente arrayCliente[], int tamCliente, ePedido arrayPedido[], int tamPedido){
+	int i;
+	int j;
+	int acumProcesado=0;
+	int mayor=0;
+	int flag=0;
+	int indexCliente;
+
+
+	for(i=0;i<tamCliente;i++){
+
+		for(j=0;j<tamPedido;j++){
+			if(arrayPedido[j].idEmpresa == arrayCliente[i].idEmpresa && arrayPedido[j].estado==1){
+				acumProcesado++;
+			}
+			if(acumProcesado>mayor || flag==0){
+				flag=1;
+				mayor=acumProcesado;
+				indexCliente=i;
+			}
+		}
+		acumProcesado = 0;
+	}
+	printf("\nEl cliente con mas pedidos procesados es:  %s con  %d pedidos\n", arrayCliente[indexCliente].empresa, mayor);
+}
+
+void clienteMasPedidos(eCliente arrayCliente[], int tamCliente, ePedido arrayPedido[], int tamPedido){
+	int i;
+	int j;
+	int acumPedido=0;
+	int mayor=0;
+	int flag=0;
+	int indexCliente;
+
+
+	for(i=0;i<tamCliente;i++){
+
+		for(j=0;j<tamPedido;j++){
+			if(arrayPedido[j].idEmpresa == arrayCliente[i].idEmpresa && (arrayPedido[j].estado==1 || arrayPedido[j].estado==0) ){
+				acumPedido++;
+			}
+			if(acumPedido>mayor || flag==0){
+				flag=1;
+				mayor=acumPedido;
+				indexCliente=i;
+			}
+		}
+		acumPedido = 0;
+	}
+	printf("\nEl cliente con mas pedidos (procesados o pendientes) es:  %s con  %d pedidos\n", arrayCliente[indexCliente].empresa, mayor);
 }
 
 
